@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28721.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterTreeSort", "BetterTreeSort\BetterTreeSort.csproj", "{EDE9FEF9-BCAD-4285-91D5-79430FB0E7EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDE9FEF9-BCAD-4285-91D5-79430FB0E7EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDE9FEF9-BCAD-4285-91D5-79430FB0E7EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDE9FEF9-BCAD-4285-91D5-79430FB0E7EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDE9FEF9-BCAD-4285-91D5-79430FB0E7EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4E46117D-7B7D-439D-A9CE-E8418015554B}
+	EndGlobalSection
+EndGlobal
