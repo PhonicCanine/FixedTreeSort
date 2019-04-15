@@ -1,4 +1,4 @@
-# FixedTreeSort (A journey)
+# FixedTreeSort (A journey through non-comparrative sorting)
 
 ## A questionable sorting algorithm for repetetive integer data-sets / multiple sorts of datasets with similar ranges
 
