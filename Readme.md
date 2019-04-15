@@ -106,6 +106,10 @@ The light at the end of the tunnel for this algorithm is this: If you initialise
 TreeSortingProvider.sortWithInPlaceTree(nums);
 ```
 
-Takes only `181` ms to sort a non-repetetive randomised array containing all numbers from 1 - 1,000,000 (and any other array with the same bounds), while OrderBy takes `316` ms.
+Takes only `602` ms to sort a non-repetetive randomised array containing all numbers from 1 - 2,000,000 (and any other array with the same bounds), while OrderBy takes `620` ms.
 
 It's worth noting finally, that RAM usage scales based on the width of the tree, and for a `100,000,000` element pre-baked tree, that's well over `20GB` of RAM.
+
+## Where to from here
+
+Well, as it turns out, just making an array the length of the maximum value then placing counts in each number that is inside the array to be sorted is faster than FixedTreeSort, and faster than introsort.

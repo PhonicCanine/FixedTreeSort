@@ -144,6 +144,12 @@ namespace TreeSort
             {
                 //tree.addValue(i);
                 endNodes[i].incrementValue(i);
+                var above = endNodes[i].above;
+                while (above != null)
+                {
+                    above.valuesBelow++;
+                    above = above.above;
+                }
             }
 
             int index = 0;
@@ -165,7 +171,7 @@ namespace TreeSort
                 
 
                 foreach (var child in node.branches)
-                    if (child != null)
+                    if (child != null && !(child.valuesBelow == 0 && child.valuesHere == 0))
                         op += searchTree(child);
                 node.valuesBelow -= op;
                 return op;

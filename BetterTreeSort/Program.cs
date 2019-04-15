@@ -13,7 +13,7 @@ namespace BetterTreeSortTest
         {
 
             var numbers = new List<uint>();
-            uint max = 1000000;
+            uint max = 2000000;
             for (uint i = 1; i < max; i++)
                 for (uint x = 0; x < 1; x++)
                     numbers.Add(i);
@@ -35,7 +35,7 @@ namespace BetterTreeSortTest
 
             //When using massive arrays (like this example of 100,000,000 elements), the RAM usage in the linq implementation means a heavy performance hit on the second run of the algorithm
 
-            TreeSortingProvider.init(1000000,128);
+            TreeSortingProvider.init(2000000,128);
             Console.WriteLine("Initialised");
 
             uint[] nums = numbers.ToArray();
