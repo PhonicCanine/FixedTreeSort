@@ -1,4 +1,4 @@
-# FixedTreeSort
+# FixedTreeSort (A journey)
 
 ## A questionable sorting algorithm for repetetive integer data-sets / multiple sorts of datasets with similar ranges
 
@@ -8,6 +8,9 @@ Probably not. Unless you have:
 * A data-set that can be simplified to only unsigned integers (and a good amount of RAM)
 * A very repetetive, long dataset
 * The need to sort multiple lists (which fit in the same bounds) / sort the same list multiple times
+
+TL;DR:
+ArraySort is better than FixedTreeSort and IntroSort.
 
 ### Details
 
@@ -106,10 +109,48 @@ The light at the end of the tunnel for this algorithm is this: If you initialise
 TreeSortingProvider.sortWithInPlaceTree(nums);
 ```
 
-Takes only `602` ms to sort a non-repetetive randomised array containing all numbers from 1 - 2,000,000 (and any other array with the same bounds), while OrderBy takes `620` ms.
+Takes only `549` ms to sort a non-repetetive randomised array containing all numbers from 1 - 2,000,000 (and any other array with the same bounds), while OrderBy takes `630` ms.
 
 It's worth noting finally, that RAM usage scales based on the width of the tree, and for a `100,000,000` element pre-baked tree, that's well over `20GB` of RAM.
 
 ## Where to from here
 
 Well, as it turns out, just making an array the length of the maximum value then placing counts in each number that is inside the array to be sorted is faster than FixedTreeSort, and faster than introsort.
+
+```CS
+static void arraySort(uint[] array)
+{
+    uint max = 0;
+    for (int i = 0; i < array.Length; i++)
+        if (array[i] > max)
+            max = array[i];
+
+    uint[] sortArray = new uint[max + 1];
+
+    for (int i = 0; i < array.Length; i++)
+        sortArray[array[i]]++;
+
+    int idx = 0;
+    for (uint i = 0; i < sortArray.Length; i++)
+        for (uint x = 0; x < sortArray[i]; x++)
+            array[idx++] = i;
+}
+```
+
+```
+                                +-----------------------------------------+
+                                |  ArraySort | FixedTreeSort* |   .OrderBy|
++-------------------------------|-----------------------------------------|
+| 2m rand. items, no repeats    |       16ms |      590ms     |     638ms |
++-------------------------------|-----------------------------------------|
+| 1m rand. items, no repeats    |        7ms |      290ms     |     277ms |
++-------------------------------|-----------------------------------------|
+| 500k rand. items, 1k repeats  |     1978ms |   101256ms     |  411860ms |
++-------------------------------+-----------------------------------------+
+
+* - with tree sort, the tree was pre-initialised (this would matter most for the first two tests)
+```
+
+So, what's the lesson in this?
+
+Well, if you have a range-limited dataset (or lots of RAM), ArraySort is almost always going to be the best option.

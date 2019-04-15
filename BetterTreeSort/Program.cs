@@ -9,11 +9,30 @@ namespace BetterTreeSortTest
     
     class Program
     {
+
+        static void arraySort(uint[] array)
+        {
+            uint max = 0;
+            for (int i = 0; i < array.Length; i++)
+                if (array[i] > max)
+                    max = array[i];
+
+            uint[] sortArray = new uint[max + 1];
+
+            for (int i = 0; i < array.Length; i++)
+                sortArray[array[i]]++;
+
+            int idx = 0;
+            for (uint i = 0; i < sortArray.Length; i++)
+                for (uint x = 0; x < sortArray[i]; x++)
+                    array[idx++] = i;
+        }
+
         static void Main(string[] args)
         {
 
             var numbers = new List<uint>();
-            uint max = 2000000;
+            uint max = 1000000;
             for (uint i = 1; i < max; i++)
                 for (uint x = 0; x < 1; x++)
                     numbers.Add(i);
@@ -35,7 +54,7 @@ namespace BetterTreeSortTest
 
             //When using massive arrays (like this example of 100,000,000 elements), the RAM usage in the linq implementation means a heavy performance hit on the second run of the algorithm
 
-            TreeSortingProvider.init(2000000,128);
+            TreeSortingProvider.init(max,128);
             Console.WriteLine("Initialised");
 
             uint[] nums = numbers.ToArray();
@@ -103,7 +122,41 @@ namespace BetterTreeSortTest
 
             Thread.Sleep(500);
 
+            nums = numbers.ToArray();
+
             
+
+            s.Reset();
+            s.Start();
+            arraySort(nums);
+            s.Stop();
+
+            ordered = null;
+
+            Console.WriteLine("Took " + s.ElapsedMilliseconds + " ms to sort, with arraysort");
+
+            valid = true;
+            for (int z = 0; z < nums.Length; z++)
+            {
+                if (nums[z] != correctOrder[z])
+                {
+                    valid = false;
+                    Console.WriteLine("Expected " + correctOrder[z] + ". Got: " + nums[z]);
+                }
+            }
+
+            if (valid)
+            {
+                Console.WriteLine("Sorting was valid.");
+            }
+            else
+            {
+                Console.WriteLine("Sorting was invalid.");
+            }
+
+            Thread.Sleep(500);
+
+
 
             Console.ReadLine();
         }
