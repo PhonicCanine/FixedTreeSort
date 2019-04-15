@@ -13,19 +13,56 @@ namespace BetterTreeSortTest
         static void arraySort(uint[] array)
         {
             uint max = 0;
+            uint min = uint.MaxValue;
             for (int i = 0; i < array.Length; i++)
+            {
                 if (array[i] > max)
                     max = array[i];
+                if (array[i] < min)
+                    min = array[i];
+            }
+            
 
-            uint[] sortArray = new uint[max + 1];
+            uint[] sortArray = new uint[(max + 1) - min];
 
             for (int i = 0; i < array.Length; i++)
-                sortArray[array[i]]++;
+                sortArray[array[i] - min]++;
 
             int idx = 0;
             for (uint i = 0; i < sortArray.Length; i++)
                 for (uint x = 0; x < sortArray[i]; x++)
-                    array[idx++] = i;
+                    array[idx++] = min + i;
+        }
+
+        static void fastSort(uint[] array)
+        {
+            uint max = 0;
+            uint min = uint.MaxValue;
+            uint maxBuckets = UInt16.MaxValue * 16;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] > max)
+                    max = array[i];
+                if (array[i] < min)
+                    min = array[i];
+            }
+
+            if ((max - min) < Math.Min(array.Length * (Math.Log10(array.Length) / Math.Log10(2)), maxBuckets))
+            {
+                uint[] sortArray = new uint[(max + 1) - min];
+
+                for (int i = 0; i < array.Length; i++)
+                    sortArray[array[i] - min]++;
+
+                int idx = 0;
+                for (uint i = 0; i < sortArray.Length; i++)
+                    for (uint x = 0; x < sortArray[i]; x++)
+                        array[idx++] = min + i;
+            }
+            else
+            {
+                array = array.OrderBy((x) => x).ToArray();
+            }
         }
 
         static void Main(string[] args)

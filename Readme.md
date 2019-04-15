@@ -10,7 +10,7 @@ Probably not. Unless you have:
 * The need to sort multiple lists (which fit in the same bounds) / sort the same list multiple times
 
 TL;DR:
-ArraySort is better than FixedTreeSort and IntroSort.
+ArraySort is better than FixedTreeSort and IntroSort. fastSort (at the bottom of this) will automate the decision of algorithm for optimal time.
 
 ### Details
 
@@ -121,19 +121,25 @@ Well, as it turns out, just making an array the length of the maximum value then
 static void arraySort(uint[] array)
 {
     uint max = 0;
+    uint min = uint.MaxValue;
     for (int i = 0; i < array.Length; i++)
+    {
         if (array[i] > max)
             max = array[i];
+        if (array[i] < min)
+            min = array[i];
+    }
+    
 
-    uint[] sortArray = new uint[max + 1];
+    uint[] sortArray = new uint[(max + 1) - min];
 
     for (int i = 0; i < array.Length; i++)
-        sortArray[array[i]]++;
+        sortArray[array[i] - min]++;
 
     int idx = 0;
     for (uint i = 0; i < sortArray.Length; i++)
         for (uint x = 0; x < sortArray[i]; x++)
-            array[idx++] = i;
+            array[idx++] = min + i;
 }
 ```
 
@@ -153,4 +159,39 @@ static void arraySort(uint[] array)
 
 So, what's the lesson in this?
 
-Well, if you have a range-limited dataset (or lots of RAM), ArraySort is almost always going to be the best option.
+Well, if you have a range-limited dataset (Such that range < n * log2(n)) (or lots of RAM), ArraySort is almost always going to be the best option.
+
+```CS
+static void fastSort(uint[] array)
+{
+  uint max = 0;
+  uint min = uint.MaxValue;
+  uint maxBuckets = UInt16.MaxValue * 16;
+  for (int i = 0; i < array.Length; i++)
+  {
+      if (array[i] > max)
+          max = array[i];
+      if (array[i] < min)
+          min = array[i];
+  }
+
+  if ((max - min) < Math.Min(array.Length * (Math.Log10(array.Length) / Math.Log10(2)), maxBuckets))
+    {
+        uint[] sortArray = new uint[(max + 1) - min];
+
+        for (int i = 0; i < array.Length; i++)
+            sortArray[array[i] - min]++;
+
+        int idx = 0;
+        for (uint i = 0; i < sortArray.Length; i++)
+            for (uint x = 0; x < sortArray[i]; x++)
+                array[idx++] = min + i;
+    }
+    else
+    {
+        array = array.OrderBy((x) => x).ToArray();
+    }
+}
+```
+
+will do that calculation for you. All in all, `fastSort` will result in best case performance of `O(n)` and worst case performance of `O(n log n)`.
